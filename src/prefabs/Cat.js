@@ -4,7 +4,9 @@ class Cat extends Phaser.Sprite {
   constructor (game, x, y, asset) {
     super(game, x, y, 'cat')
     this.game.physics.arcade.enableBody(this)
-    this.body.immovable = true
+    this.checkWorldBounds = true
+    this.body.collideWorldBounds = true
+    this.body.gravity.setTo(0, 500)
 
   }
 
