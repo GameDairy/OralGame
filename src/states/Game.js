@@ -13,24 +13,24 @@ export default class extends Phaser.State {
     this.game.number_of_iterations = 0
     this.game.platform_width = 65.9
     this.game.speed = 5
-    //this.game.roadStartPosition = {
-      //  x: this.game.world.width + 100,
-      //  y: this.game.world.height/2 - 1
-    //}
-    this.setUpPlatforms()
+    this.game.roadStartPosition = {
+       x: this.game.world.width + 100,
+       y: this.game.world.height
+    }   
+    this.generateLevel()
   }
 
   setUpPlatforms() {
   this.platforms = new Platform(this.game, 0, 0, 'tile1')
   this.game.world.addChildAt(this.platforms, 0)
   this.game.add.existing(this.platforms)
-  //this.platforms.x = this.game.roadStartPosition.x
-  //this.platforms.y = this.game.roadStartPosition.y
-  this.platforms.alignIn(this.game.world.bounds, Phaser.BOTTOM_RIGHT)
+  this.platforms.x = this.game.roadStartPosition.x
+  this.platforms.y = this.game.roadStartPosition.y
+  this.platforms.anchor.setTo(1, 1)
   this.game.platformsArr.push(this.platforms)
   if (this.platforms.x < -120) {
     this.game.platformsArr.splice(i, 1)
-    this.platforms.destory()
+    this.platforms.destroy()
   }
   }
 
@@ -42,8 +42,20 @@ export default class extends Phaser.State {
      sprite.y -= this.game.speed * Math.sin(this.game.angle * Math.PI/180)
      i--
    }
-
 }
+
+  generateLevel() {
+    let i = 0
+    let number_of_platforms = Math.ceil(this.game.world.width/this.game.platform_width) + 2
+    while (i <= number_of_platforms) {
+      this.setUpPlatforms()
+      if(i != number_of_platforms) {
+        this.movePlatforms(this.game.platform_width)
+      }
+      i++
+    }
+  }
+
   update() {
   this.movePlatforms(this.game.speed)
   this.game.number_of_iterations++
