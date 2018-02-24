@@ -1,6 +1,7 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
 import Platform from '../prefabs/Platform'
+import Cat from '../prefabs/Cat'
 
 export default class extends Phaser.State {
   init () {}
@@ -12,12 +13,14 @@ export default class extends Phaser.State {
     this.game.angle = 180
     this.game.number_of_iterations = 0
     this.game.platform_width = 65.9
+    this.game.platform_height = 105
     this.game.speed = 5
     this.game.roadStartPosition = {
        x: this.game.world.width + 100,
        y: this.game.world.height
     }   
     this.generateLevel()
+    this.addCat()
   }
 
   setUpPlatforms() {
@@ -54,6 +57,15 @@ export default class extends Phaser.State {
       }
       i++
     }
+  }
+
+  addCat() {
+    console.log('check cat')
+    this.cat = new Cat (this.game, 0, 0, 'cat')
+    this.game.add.existing(this.cat)
+    this.cat.x = this.game.world.width
+    this.cat.y = this.game.height - this.game.platform_height
+    this.cat.anchor.setTo(1, 1)
   }
 
   update() {
