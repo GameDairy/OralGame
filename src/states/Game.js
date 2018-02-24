@@ -28,18 +28,18 @@ export default class extends Phaser.State {
   this.platforms.y = this.game.roadStartPosition.y
   this.platforms.anchor.setTo(1, 1)
   this.game.platformsArr.push(this.platforms)
-  if (this.platforms.x < -120) {
-    this.game.platformsArr.splice(i, 1)
-    this.platforms.destroy()
-  }
   }
 
   movePlatforms(speed) {
    let i = this.game.platformsArr.length - 1
    while(i >= 0) {
      let sprite = this.game.platformsArr[i]
-     sprite.x += this.game.speed * Math.cos(this.game.angle * Math.PI/180)
-     sprite.y -= this.game.speed * Math.sin(this.game.angle * Math.PI/180)
+     sprite.x += speed * Math.cos(this.game.angle * Math.PI/180)
+     sprite.y -= speed * Math.sin(this.game.angle * Math.PI/180)
+     if (this.platforms.x < -120) {
+        this.game.platformsArr.splice(i, 1)
+        sprite.destroy()
+  }
      i--
    }
 }
