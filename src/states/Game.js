@@ -8,9 +8,10 @@ export default class extends Phaser.State {
     super()
     this.catOnThePlatform = true
   }
+
   init () {}
-  preload () {
-  }
+
+  preload () {}
 
   create () {
     this.game.platformsArr = []
@@ -24,7 +25,7 @@ export default class extends Phaser.State {
     this.game.roadStartPosition = {
        x: this.game.world.width + 100,
        y: this.game.world.height
-    }   
+    }
     this.generateLevel()
     this.addCat()
     this.game.input.onDown.add(this.catJump, this)
@@ -72,16 +73,15 @@ export default class extends Phaser.State {
     this.cat.x = 100
     this.cat.y = this.game.height - this.game.platform_height
     this.cat.anchor.setTo(1, 1)
-
   }
 
   catJump() {
-      if (this.game.cursors.left.isDown) {
-        this.cat.body.velocity.y = -250;
-      } 
-      if (this.game.jumpButton.isDown) {
-        this.cat.body.velocity.y = -250;
-      }
+    if (this.game.cursors.left.isDown) {
+      this.cat.body.velocity.y = -250;
+    }
+    if (this.game.jumpButton.isDown) {
+      this.cat.body.velocity.y = -250;
+    }
   }
 
   checkCatOnThePlatform() {
@@ -90,14 +90,14 @@ export default class extends Phaser.State {
 
 
   update() {
-  this.movePlatforms(this.game.speed)
-  this.game.number_of_iterations++
-      if(this.game.number_of_iterations > this.game.platform_width/this.game.speed) {
-        this.game.number_of_iterations = 0
-        this.setUpPlatforms()
-      }
-  this.game.physics.arcade.collide(this.cat, this.platforms)
-  this.catJump()
+    this.movePlatforms(this.game.speed)
+    this.game.number_of_iterations++
+    if(this.game.number_of_iterations > this.game.platform_width/this.game.speed) {
+      this.game.number_of_iterations = 0
+      this.setUpPlatforms()
+    }
+    this.game.physics.arcade.collide(this.cat, this.platforms)
+    this.catJump()
   }
 
   render () {
