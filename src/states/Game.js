@@ -26,8 +26,8 @@ export default class extends Phaser.State {
        x: this.game.world.width + 100,
        y: this.game.world.height
     }
-    this.generateLevel()
-    this.addCat()
+    this.levelGenerate()
+    this.catAdd()
     this.game.input.onDown.add(this.catJump, this)
   }
 
@@ -41,7 +41,7 @@ export default class extends Phaser.State {
     this.game.platformsArr.push(this.platforms)
   }
 
-  movePlatforms(speed) {
+  platformsMove(speed) {
     let i = this.game.platformsArr.length - 1
     while(i >= 0) {
       let sprite = this.game.platformsArr[i]
@@ -55,19 +55,19 @@ export default class extends Phaser.State {
     }
   }
 
-  generateLevel() {
+  levelGenerate() {
     let i = 0
     let number_of_platforms = Math.ceil(this.game.world.width/this.game.platform_width) + 2
     while (i <= number_of_platforms) {
       this.setUpPlatforms()
       if(i != number_of_platforms) {
-        this.movePlatforms(this.game.platform_width)
+        this.platformsMove(this.game.platform_width)
       }
       i++
     }
   }
 
-  addCat() {
+  catAdd() {
     this.cat = new Cat (this.game, 0, 0, 'cat')
     this.game.add.existing(this.cat)
     this.cat.x = 100
@@ -90,7 +90,7 @@ export default class extends Phaser.State {
 
 
   update() {
-    this.movePlatforms(this.game.speed)
+    this.platformsMove(this.game.speed)
     this.game.number_of_iterations++
     if(this.game.number_of_iterations > this.game.platform_width/this.game.speed) {
       this.game.number_of_iterations = 0
