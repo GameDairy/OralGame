@@ -15,6 +15,7 @@ export default class extends Phaser.State {
   preload () {}
 
   create () {
+    this.game.timer = game.time.create(false)
     this.game.angle = 180
     this.game.speed = 5
     this.game.cursors = game.input.keyboard.createCursorKeys();
@@ -30,15 +31,13 @@ export default class extends Phaser.State {
       y: this.game.height - this.game.platform_height
     }
     this.game.enemies_set = ['enemy1', 'enemy2', 'enemy3']
-    this.game.enemy_inintial_position = {
-      x: this.game.world.randomX,
-      y: this.game.world.randomY
-    }
+    this.game.enemy_inintial_position = this.game.rnd.integerInRange(0, this.game.world.height - 115)
 
     this.catAdd()
     this.platformsSetUp()
     this.levelGenerate()
     this.enemyAdd()
+
   }
 
   platformsSetUp() {
@@ -105,12 +104,14 @@ export default class extends Phaser.State {
   enemyAdd() {
     this.enemy = new Enemy (
       this.game,
-      this.game.enemy_inintial_position.x,
-      this.game.enemy_inintial_position.y
+      this.game.world.randomX,
+      this.game.enemy_inintial_position
       )
   }
 
   enemySpawnWithTimer() {
+    this.game.timer.loop(3000, this.enemyAdd())
+    this.game.timer.start()
   }
 
   catCollideEnemy() {
@@ -120,6 +121,7 @@ export default class extends Phaser.State {
     this.platformsMove(this.game.speed)
     this.game.physics.arcade.collide(this.cat, this.platforms)
     this.catJump()
+
   }
 
   render () {
