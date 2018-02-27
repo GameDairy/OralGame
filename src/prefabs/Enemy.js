@@ -1,17 +1,17 @@
 import Phaser from 'phaser'
 
-class Cat extends Phaser.Sprite {
+class Enemy extends Phaser.Sprite {
   constructor (game, x, y) {
-    super(game, x, y, 'cat')
+    let tile = game.enemies_set[Math.floor(Math.random()*game.enemies_set.length)]
+    super(game, x, y, tile)
     this.game.physics.arcade.enableBody(this)
     this.checkWorldBounds = true
     this.body.collideWorldBounds = true
-    this.body.gravity.setTo(0, 500)
     this.game.add.existing(this)
-    this.anchor.setTo(1, 1)
+
   }
 
   update () {
   }
 }
-export default Cat
+export default Enemy

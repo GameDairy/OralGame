@@ -2,6 +2,7 @@
 import Phaser from 'phaser'
 import Platform from '../prefabs/Platform'
 import Cat from '../prefabs/Cat'
+import Enemy from '../prefabs/Enemy'
 
 export default class extends Phaser.State {
   constructor() {
@@ -28,9 +29,14 @@ export default class extends Phaser.State {
       x: 100,
       y: this.game.height - this.game.platform_height
     }
+    this.game.enemies_set = ['enemy1', 'enemy2', 'enemy3']
+    this.game.steps_till_enemy = 0
+
     this.catAdd()
     this.platformsSetUp()
     this.levelGenerate()
+    this.enemyAdd()
+
   }
 
   platformsSetUp() {
@@ -94,12 +100,24 @@ export default class extends Phaser.State {
     this.catOnThePlatform = true
   }
 
+  enemyAdd() {
+    this.enemy = new Enemy (
+      this.game,
+      this.game.world.randomX,
+      this.game.rnd.integerInRange(100, 500)
+      )
+    this.game.steps_till_enemy = this.game.rnd.integerInRange(50, 180)
+    }
+
   update() {
     this.platformsMove(this.game.speed)
     this.game.physics.arcade.collide(this.cat, this.platforms)
     this.catJump()
+    this.game.steps_till_enemy--
+    if(this.game.steps_till_enemy === 0) {
+      this.enemyAdd()
+    }
   }
 
-  render () {
-  }
+  render () {}
 }
