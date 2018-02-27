@@ -103,10 +103,15 @@ export default class extends Phaser.State {
   enemyAdd() {
     this.enemy = new Enemy (
       this.game,
-      this.game.world.randomX,
+      this.game.rnd.integerInRange(0, 800),
       this.game.rnd.integerInRange(100, 500)
       )
     this.game.steps_till_enemy = this.game.rnd.integerInRange(50, 180)
+    }
+
+    enemiesMove(direction) {
+      this.enemy.body.velocity.x -= direction * this.game.speed
+      this.enemyAdd()
     }
 
   update() {
@@ -115,7 +120,7 @@ export default class extends Phaser.State {
     this.catJump()
     this.game.steps_till_enemy--
     if(this.game.steps_till_enemy === 0) {
-      this.enemyAdd()
+      this.enemiesMove(this.game.speed)
     }
   }
 
