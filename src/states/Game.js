@@ -30,7 +30,6 @@ export default class extends Phaser.State {
       y: this.game.height - this.game.platform_height
     }
     this.game.enemies_set = ['enemy1', 'enemy2', 'enemy3']
-    this.game.enemy_inintial_position = this.game.rnd.integerInRange(0, this.game.world.height - 115)
     this.game.steps_till_enemy = 0
 
     this.catAdd()
@@ -105,10 +104,10 @@ export default class extends Phaser.State {
     this.enemy = new Enemy (
       this.game,
       this.game.world.randomX,
-      this.game.enemy_inintial_position
+      this.game.rnd.integerInRange(100, 500)
       )
     this.game.steps_till_enemy = this.game.rnd.integerInRange(50, 180)
-  }
+    }
 
   update() {
     this.platformsMove(this.game.speed)
