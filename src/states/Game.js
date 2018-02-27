@@ -119,6 +119,5 @@ export default class extends Phaser.State {
     }
   }
 
-  render () {
-  }
+  render () {}
 }
