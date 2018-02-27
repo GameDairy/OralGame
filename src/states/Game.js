@@ -103,7 +103,7 @@ export default class extends Phaser.State {
   enemyAdd() {
     this.enemy = new Enemy (
       this.game,
-      this.game.rnd.integerInRange(0, 800),
+      this.game.rnd.integerInRange(1500, 1550),
       this.game.rnd.integerInRange(100, 500)
       )
     this.game.steps_till_enemy = this.game.rnd.integerInRange(50, 180)
