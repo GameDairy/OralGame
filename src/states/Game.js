@@ -103,8 +103,8 @@ export default class extends Phaser.State {
   enemyAdd() {
     this.enemy = new Enemy (
       this.game,
-      this.game.rnd.integerInRange(1500, 1550),
-      this.game.rnd.integerInRange(100, 500)
+      this.game.world.width,
+      this.game.rnd.integerInRange(0, (this.game.world.height - this.game.platform_height - 50))
       )
     this.game.steps_till_enemy = this.game.rnd.integerInRange(50, 180)
     }
@@ -117,6 +117,7 @@ export default class extends Phaser.State {
   update() {
     this.platformsMove(this.game.speed)
     this.game.physics.arcade.collide(this.cat, this.platforms)
+    this.game.physics.arcade.collide(this.cat, this.enemy)
     this.catJump()
     this.game.steps_till_enemy--
     if(this.game.steps_till_enemy === 0) {
