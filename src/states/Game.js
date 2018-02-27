@@ -35,7 +35,9 @@ export default class extends Phaser.State {
     this.catAdd()
     this.platformsSetUp()
     this.levelGenerate()
-    this.enemyAdd()
+    this.enemiesSetUp()
+    this.enemyCreate()
+
 
   }
 
@@ -100,24 +102,29 @@ export default class extends Phaser.State {
     this.catOnThePlatform = true
   }
 
-  enemyAdd() {
+  enemiesSetUp() {
+    this.enemies = this.game.add.group()
+  }
+
+  enemyCreate() {
     this.enemy = new Enemy (
       this.game,
       this.game.world.width,
       this.game.rnd.integerInRange(0, (this.game.world.height - this.game.platform_height - 50))
       )
+    this.enemies.add(this.enemy)
     this.game.steps_till_enemy = this.game.rnd.integerInRange(50, 180)
     }
 
     enemiesMove(direction) {
       this.enemy.body.velocity.x -= direction * this.game.speed
-      this.enemyAdd()
+      this.enemyCreate()
     }
 
   update() {
     this.platformsMove(this.game.speed)
     this.game.physics.arcade.collide(this.cat, this.platforms)
-    this.game.physics.arcade.collide(this.cat, this.enemy)
+    this.game.physics.arcade.collide(this.cat, this.enemies)
     this.catJump()
     this.game.steps_till_enemy--
     if(this.game.steps_till_enemy === 0) {
