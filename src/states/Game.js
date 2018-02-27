@@ -117,8 +117,9 @@ export default class extends Phaser.State {
     }
 
     enemiesMove(direction) {
-      this.enemy.body.velocity.x -= direction * this.game.speed
+      this.enemy.body.velocity.x -= direction * (this.game.speed * 12)
       this.enemyCreate()
+
     }
 
   update() {

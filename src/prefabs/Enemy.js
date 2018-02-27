@@ -6,7 +6,7 @@ class Enemy extends Phaser.Sprite {
     super(game, x, y, tile)
     this.game.physics.arcade.enableBody(this)
     this.checkWorldBounds = true
-    this.body.collideWorldBounds = true
+    this.body.collideWorldBounds = false
     this.game.add.existing(this)
 
   }
