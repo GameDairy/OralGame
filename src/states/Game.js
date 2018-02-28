@@ -111,11 +111,11 @@ export default class extends Phaser.State {
       this.game,
       this.game.world.width,
       this.game.rnd.integerInRange(0, (this.game.world.height - this.game.platform_height - 50)),
-      - this.game.speed * 60
-      )
+      -this.game.speed * 60
+    )
     this.enemies.add(enemy)
     this.game.steps_till_enemy = this.game.rnd.integerInRange(50, 180)
-    }
+  }
 
   update() {
     this.platformsMove(this.game.speed)
