@@ -8,10 +8,13 @@ class Enemy extends Phaser.Sprite {
     this.checkWorldBounds = true
     this.body.collideWorldBounds = false
     this.game.add.existing(this)
-
+    this.body.velocity.x = 20
   }
 
   update () {
+    if(this.x < 0) {
+      this.destroy()
+    }
   }
 }
 export default Enemy
