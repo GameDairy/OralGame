@@ -17,6 +17,9 @@ export default class extends Phaser.State {
   create () {
     this.game.angle = 180
     this.game.speed = 5
+    this.game.score = 0
+    this.game.lives = 5
+    this.game.steps_till_score = 60
     this.game.cursors = game.input.keyboard.createCursorKeys();
     this.game.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.game.roadStartPosition = {
@@ -32,13 +35,12 @@ export default class extends Phaser.State {
     this.game.enemies_set = ['enemy1', 'enemy2', 'enemy3']
     this.game.steps_till_enemy = 0
 
+    this.setUpText()
     this.catAdd()
     this.platformsSetUp()
     this.levelGenerate()
     this.enemiesSetUp()
     this.enemyCreate()
-
-
   }
 
   platformsSetUp() {
@@ -117,14 +119,44 @@ export default class extends Phaser.State {
     this.game.steps_till_enemy = this.game.rnd.integerInRange(50, 180)
   }
 
+  setUpText() {
+    this.score_text = this.createText(20, 20, 'left', `Score: ${this.game.score}`)
+    this.lives_text = this.createText(20, 50, 'left', `Lives: ${this.game.lives}`)
+  }
+
+  createText(xOffset, yOffset, align, text) {
+    return this.game.add.text(
+      xOffset,
+      yOffset,
+      text,
+      {
+        font: '28px Times New Roman',
+        fill: '#000000',
+        boundsAlignH:align
+      }
+      ).setTextBounds(0,0, this.game.world.width,0)
+  }
+
+  enemyCollidedCat(cat, enemy) {
+    enemy.destroy()
+    this.game.lives = this.game.lives - 1
+    this.lives_text.text = `Lives: ${this.game.lives}`
+  }
+
   update() {
     this.platformsMove(this.game.speed)
     this.game.physics.arcade.collide(this.cat, this.platforms)
-    this.game.physics.arcade.collide(this.cat, this.enemies)
+    this.game.physics.arcade.collide(this.cat, this.enemies, this.enemyCollidedCat, null, this)
     this.catJump()
     this.game.steps_till_enemy--
     if(this.game.steps_till_enemy === 0) {
       this.enemyCreate()
+    }
+    this.game.steps_till_score--
+    if(this.game.steps_till_score === 0) {
+      this.game.score += 10
+      this.game.steps_till_score = 60
+      this.score_text.text = `Score: ${this.game.score}`
     }
   }
 
