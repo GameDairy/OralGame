@@ -18,22 +18,21 @@ export default class extends Phaser.State {
         this.world.centerX,
         this.world.centerY - 50,
         'pic'
-        )
+    )
     let button = game.add.button(
         this.game.world.centerX - 300,
         this.game.world.centerY - 100,
         'button',
         this.restartGame,
         this
-        )
+    )
 
     this.gameover_text = this.createText(
         this.game.world.centerX,
         this.game.world.centerY - 150,
         'center',
         `Game over lalka. Your score: ${this.game.score}`
-        )
-    //this.input.onDown.add(this.restartGame, this)
+    )
     text.anchor.set(0.5)
   }
 
@@ -47,7 +46,7 @@ export default class extends Phaser.State {
         fill: '#000000',
         boundsAlignH:align
       }
-      ).setTextBounds(0, 0, this.game.world.center,0)
+    ).setTextBounds(0, 0, this.game.world.center,0)
   }
 
   restartGame() {
