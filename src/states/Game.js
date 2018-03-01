@@ -12,7 +12,8 @@ export default class extends Phaser.State {
 
   init () {}
 
-  preload () {}
+  preload () {
+  }
 
   create () {
     this.game.angle = 180
@@ -141,6 +142,14 @@ export default class extends Phaser.State {
     enemy.destroy()
     this.game.lives = this.game.lives - 1
     this.lives_text.text = `Lives: ${this.game.lives}`
+    if(this.game.lives === 0) {
+      this.gameEnd()
+    }
+  }
+
+  gameEnd() {
+    this.game.state.start('Gameover')
+    this.setUpText()
   }
 
   update() {
