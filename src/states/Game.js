@@ -3,6 +3,7 @@ import Phaser from 'phaser'
 import Platform from '../prefabs/Platform'
 import Cat from '../prefabs/Cat'
 import Enemy from '../prefabs/Enemy'
+import Cloud from '../prefabs/Cloud'
 
 export default class extends Phaser.State {
   constructor() {
@@ -20,6 +21,8 @@ export default class extends Phaser.State {
     this.game.speed = 5
     this.game.score = 0
     this.game.lives = 5
+    this.game.locked = false
+    this.game.lockedTo = null
     this.game.steps_till_score = 60
     this.game.cursors = game.input.keyboard.createCursorKeys();
     this.game.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -35,6 +38,7 @@ export default class extends Phaser.State {
     }
     this.game.enemies_set = ['enemy1', 'enemy2', 'enemy3']
     this.game.steps_till_enemy = 0
+    this.game.clouds_set = ['cloud1', 'cloud2', 'cloud3']
 
     this.setUpText()
     this.catAdd()
@@ -42,6 +46,8 @@ export default class extends Phaser.State {
     this.levelGenerate()
     this.enemiesSetUp()
     this.enemyCreate()
+    this.cloudsSetUp()
+    this.cloudCreate()
   }
 
   platformsSetUp() {
@@ -120,6 +126,30 @@ export default class extends Phaser.State {
     this.game.steps_till_enemy = this.game.rnd.integerInRange(50, 180)
   }
 
+  cloudCreate() {
+    let cloud = new Cloud (
+      this.game,
+      this.game.world.width,
+      this.game.rnd.integerInRange(0, (this.game.world.height - this.game.platform_height - 50)),
+      -this.game.speed*20
+    )
+    this.clouds.add(cloud)
+    this.game.steps_till_cloud = this.game.rnd.integerInRange(80,200)
+  }
+
+  cloudsSetUp() {
+    this.clouds = this.game.add.group()
+  }
+
+  cloudLocksCat(cat, cloud) {
+    if (!this.game.locked && this.cat.body.velocity.y > 0) {
+        this.game.locked = true;
+        this.game.lockedTo = cloud;
+        this.clouds.catLocked = true;
+        this.cat.body.velocity.y = 0;
+    }
+  }
+
   setUpText() {
     this.score_text = this.createText(20, 20, 'left', `Score: ${this.game.score}`)
     this.lives_text = this.createText(20, 50, 'left', `Lives: ${this.game.lives}`)
@@ -156,10 +186,17 @@ export default class extends Phaser.State {
     this.platformsMove(this.game.speed)
     this.game.physics.arcade.collide(this.cat, this.platforms)
     this.game.physics.arcade.collide(this.cat, this.enemies, this.enemyCollidedCat, null, this)
+    this.game.physics.arcade.collide(this.enemies, this.platforms)
+    this.game.physics.arcade.collide(this.clouds, this.cat)
     this.catJump()
+    this.cloudLocksCat(this.cat, this.clouds)
     this.game.steps_till_enemy--
     if(this.game.steps_till_enemy === 0) {
       this.enemyCreate()
+    }
+    this.game.steps_till_cloud--
+    if(this.game.steps_till_cloud === 0) {
+      this.cloudCreate()
     }
     this.game.steps_till_score--
     if(this.game.steps_till_score === 0) {
