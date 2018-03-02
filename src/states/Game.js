@@ -135,7 +135,7 @@ export default class extends Phaser.State {
         fill: '#000000',
         boundsAlignH:align
       }
-      ).setTextBounds(0,0, this.game.world.width,0)
+    ).setTextBounds(0,0, this.game.world.width,0)
   }
 
   enemyCollidedCat(cat, enemy) {

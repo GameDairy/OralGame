@@ -33,7 +33,7 @@ export default class extends Phaser.State {
       'center',
       `Game over lalka. Your score: ${this.game.score}`
     )
-    text.anchor.set(0.5)
+    this.gameover_text.anchor.set(0)
   }
 
   createText(xOffset, yOffset, align, text) {
@@ -51,6 +51,6 @@ export default class extends Phaser.State {
 
   restartGame() {
     this.game.state.start('Game')
-    this.stage. backgroundColor = '#4286f4'
+    this.stage.backgroundColor = '#4286f4'
   }
 }
