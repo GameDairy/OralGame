@@ -15,25 +15,25 @@ export default class extends Phaser.State {
     let gameover = this.game.add.audio('gameover')
     gameover.play()
     let pic = game.add.image(
-        this.world.centerX,
-        this.world.centerY - 50,
-        'pic'
+      this.world.centerX,
+      this.world.centerY - 50,
+      'pic'
     )
     let button = game.add.button(
-        this.game.world.centerX - 300,
-        this.game.world.centerY - 100,
-        'button',
-        this.restartGame,
-        this
+      this.game.world.centerX - 300,
+      this.game.world.centerY - 100,
+      'button',
+      this.restartGame,
+      this
     )
 
     this.gameover_text = this.createText(
-        this.game.world.centerX,
-        this.game.world.centerY - 150,
-        'center',
-        `Game over lalka. Your score: ${this.game.score}`
+      this.game.world.centerX,
+      this.game.world.centerY - 150,
+      'center',
+      `Game over lalka. Your score: ${this.game.score}`
     )
-    text.anchor.set(0.5)
+    this.gameover_text.anchor.set(0)
   }
 
   createText(xOffset, yOffset, align, text) {
@@ -51,6 +51,6 @@ export default class extends Phaser.State {
 
   restartGame() {
     this.game.state.start('Game')
-    this.stage. backgroundColor = '#4286f4'
+    this.stage.backgroundColor = '#4286f4'
   }
 }
