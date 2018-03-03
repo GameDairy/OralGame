@@ -48,6 +48,7 @@ export default class extends Phaser.State {
     this.enemyCreate()
     this.cloudsSetUp()
     this.cloudCreate()
+    this.safetyZoneCreate()
   }
 
   platformsSetUp() {
@@ -175,6 +176,12 @@ export default class extends Phaser.State {
     if(this.game.lives === 0) {
       this.gameEnd()
     }
+  }
+
+  safetyZoneCreate() {
+    let line = new Phaser.Line(this.game.world.width, (this.game.world.height - this.game.platform_height))
+    let graphics = game.add.graphics(line.start.x,line.start.y)
+    graphics.endFill()
   }
 
   gameEnd() {
