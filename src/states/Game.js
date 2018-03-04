@@ -21,6 +21,7 @@ export default class extends Phaser.State {
     this.game.speed = 5
     this.game.score = 0
     this.game.lives = 5
+    this.game.line_height = 125
     this.game.locked = false
     this.game.lockedTo = null
     this.game.steps_till_score = 60
@@ -48,6 +49,7 @@ export default class extends Phaser.State {
     this.enemyCreate()
     this.cloudsSetUp()
     this.cloudCreate()
+    this.lineCreate()
     this.safetyZoneCreate()
   }
 
@@ -178,11 +180,28 @@ export default class extends Phaser.State {
     }
   }
 
-  safetyZoneCreate() {
-    let line = new Phaser.Line(this.game.world.width, (this.game.world.height - this.game.platform_height))
-    let graphics = game.add.graphics(line.start.x,line.start.y)
-    graphics.endFill()
+  lineCreate() {
+    this.line = this.game.add.sprite(0,0)
+    this.game.physics.enable(this.line, Phaser.Physics.ARCADE)
+    this.game.physics.arcade.enableBody(this.line)
   }
+
+  safetyZoneCreate() {
+    let lines = game.add.graphics(0,0)
+    lines.beginFill(0xffd900)
+    lines.lineStyle(3, 0x000000, 1)
+    lines.moveTo(
+      -this.game.world.width, 
+      (this.game.world.height-(this.game.platform_height + this.game.line_height))
+    )
+    lines.lineTo(
+      this.game.world.width, 
+      (this.game.world.height - (this.game.platform_height + this.game.line_height))
+    )
+    lines.endFill()
+    this.line.addChild(lines)  
+  }
+
 
   gameEnd() {
     this.game.state.start('Gameover')
@@ -195,6 +214,7 @@ export default class extends Phaser.State {
     this.game.physics.arcade.collide(this.cat, this.enemies, this.enemyCollidedCat, null, this)
     this.game.physics.arcade.collide(this.enemies, this.platforms)
     this.game.physics.arcade.collide(this.clouds, this.cat)
+    this.game.physics.arcade.collide(this.enemies, this.line)
     this.catJump()
     this.cloudLocksCat(this.cat, this.clouds)
     this.game.steps_till_enemy--
