@@ -49,8 +49,8 @@ export default class extends Phaser.State {
     this.enemyCreate()
     this.cloudsSetUp()
     this.cloudCreate()
-    this.lineCreate()
-    this.safetyZoneCreate()
+    this.lineSet()
+    this.rectCreate()
   }
 
   platformsSetUp() {
@@ -133,7 +133,7 @@ export default class extends Phaser.State {
     let cloud = new Cloud (
       this.game,
       this.game.world.width,
-      this.game.rnd.integerInRange(0, (this.game.world.height - this.game.platform_height - 50)),
+      this.game.rnd.integerInRange(0, (this.game.world.height - this.game.line_height - 50)),
       -this.game.speed*20
     )
     this.clouds.add(cloud)
@@ -179,29 +179,30 @@ export default class extends Phaser.State {
       this.gameEnd()
     }
   }
-
-  lineCreate() {
+    lineSet() {
     this.line = this.game.add.sprite(0,0)
-    this.game.physics.enable(this.line, Phaser.Physics.ARCADE)
     this.game.physics.arcade.enableBody(this.line)
-  }
-
-  safetyZoneCreate() {
-    let lines = game.add.graphics(0,0)
-    lines.beginFill(0xffd900)
-    lines.lineStyle(3, 0x000000, 1)
-    lines.moveTo(
-      -this.game.world.width, 
-      (this.game.world.height-(this.game.platform_height + this.game.line_height))
-    )
-    lines.lineTo(
+    this.game.physics.enable(this.line, Phaser.Physics.Arcade)
+    this.line.immovable = true
+    this.line.allowGravity = false
+    this.line.body.setSize (
       this.game.world.width, 
-      (this.game.world.height - (this.game.platform_height + this.game.line_height))
+      1,
+      0,
+      this.game.world.height-(this.game.platform_height + this.game.line_height)
     )
-    lines.endFill()
-    this.line.addChild(lines)  
   }
 
+  rectCreate() {
+    this.rect = new Phaser.Rectangle(
+      0, 
+      (this.game.world.height-(this.game.platform_height + this.game.line_height)),
+      this.game.world.width, 
+      1
+    )
+    this.game.physics.arcade.enableBody(this)
+    this.game.physics.enable(this.rect, Phaser.Physics.Arcade)
+  }
 
   gameEnd() {
     this.game.state.start('Gameover')
@@ -233,5 +234,7 @@ export default class extends Phaser.State {
     }
   }
 
-  render () {}
+  render () {
+  this.game.debug.geom(this.rect,'#000000')
+  }
 }
