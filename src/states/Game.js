@@ -13,14 +13,14 @@ export default class extends Phaser.State {
 
   init () {}
 
-  preload () {
-  }
+  preload () {}
 
   create () {
     this.game.angle = 180
     this.game.speed = 5
     this.game.score = 0
     this.game.lives = 5
+    this.game.line_height = 125
     this.game.locked = false
     this.game.lockedTo = null
     this.game.steps_till_score = 60
@@ -31,7 +31,6 @@ export default class extends Phaser.State {
        y: this.game.world.height
     }
     this.game.input.onDown.add(this.catJump, this)
-
     this.game.cat_initial_position = {
       x: 100,
       y: this.game.height - this.game.platform_height
@@ -39,7 +38,6 @@ export default class extends Phaser.State {
     this.game.enemies_set = ['enemy1', 'enemy2', 'enemy3']
     this.game.steps_till_enemy = 0
     this.game.clouds_set = ['cloud1', 'cloud2', 'cloud3']
-
     this.setUpText()
     this.catAdd()
     this.platformsSetUp()
@@ -48,6 +46,8 @@ export default class extends Phaser.State {
     this.enemyCreate()
     this.cloudsSetUp()
     this.cloudCreate()
+    this.lineSet()
+    this.rectCreate()
   }
 
   platformsSetUp() {
@@ -119,7 +119,10 @@ export default class extends Phaser.State {
     let enemy = new Enemy (
       this.game,
       this.game.world.width,
-      this.game.rnd.integerInRange(0, (this.game.world.height - this.game.platform_height - 50)),
+      this.game.rnd.integerInRange(
+        0, 
+        (this.game.world.height - this.game.platform_height - this.game.line_height - 50)
+      ),
       -this.game.speed * 60
     )
     this.enemies.add(enemy)
@@ -130,7 +133,7 @@ export default class extends Phaser.State {
     let cloud = new Cloud (
       this.game,
       this.game.world.width,
-      this.game.rnd.integerInRange(0, (this.game.world.height - this.game.platform_height - 50)),
+      this.game.rnd.integerInRange(0, (this.game.world.height - this.game.line_height - 50)),
       -this.game.speed*20
     )
     this.clouds.add(cloud)
@@ -177,6 +180,30 @@ export default class extends Phaser.State {
     }
   }
 
+  lineSet() {
+    this.line = this.game.add.sprite(0,0)
+    this.game.physics.arcade.enableBody(this.line)
+    this.line.body.immovable = true
+    this.line.body.allowGravity = false
+    this.line.body.setSize (
+      this.game.world.width,
+      1,
+      0,
+      this.game.world.height-(this.game.platform_height + this.game.line_height)
+    )
+  }
+
+  rectCreate() {
+    this.rect = new Phaser.Rectangle(
+      0,
+      (this.game.world.height-(this.game.platform_height + this.game.line_height)),
+      this.game.world.width,
+      1
+    )
+    this.game.physics.arcade.enableBody(this)
+    this.game.physics.enable(this.rect, Phaser.Physics.Arcade)
+  }
+
   gameEnd() {
     this.game.state.start('Gameover')
     this.setUpText()
@@ -188,6 +215,7 @@ export default class extends Phaser.State {
     this.game.physics.arcade.collide(this.cat, this.enemies, this.enemyCollidedCat, null, this)
     this.game.physics.arcade.collide(this.enemies, this.platforms)
     this.game.physics.arcade.collide(this.clouds, this.cat)
+    this.game.physics.arcade.collide(this.enemies, this.line)
     this.catJump()
     this.cloudLocksCat(this.cat, this.clouds)
     this.game.steps_till_enemy--
@@ -206,5 +234,7 @@ export default class extends Phaser.State {
     }
   }
 
-  render () {}
+  render () {
+  this.game.debug.geom(this.rect,'#566b8c')
+  }
 }
