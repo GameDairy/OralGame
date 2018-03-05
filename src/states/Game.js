@@ -3,6 +3,7 @@ import Phaser from 'phaser'
 import Platform from '../prefabs/Platform'
 import Cat from '../prefabs/Cat'
 import Enemy from '../prefabs/Enemy'
+import DecMeter from '../utils/DecMeter'
 
 export default class extends Phaser.State {
   constructor() {
@@ -42,6 +43,25 @@ export default class extends Phaser.State {
     this.enemyCreate()
     this.lineSet()
     this.rectCreate()
+    this.dbmCreate()
+  }
+
+  setUpText() {
+    this.score_text = this.createText(20, 20, 'left', `Score: ${this.game.score}`)
+    this.lives_text = this.createText(20, 50, 'left', `Lives: ${this.game.lives}`)
+  }
+
+  createText(xOffset, yOffset, align, text) {
+    return this.game.add.text(
+      xOffset,
+      yOffset,
+      text,
+      {
+        font: '28px Times New Roman',
+        fill: '#000000',
+        boundsAlignH:align
+      }
+    ).setTextBounds(0,0, this.game.world.width,0)
   }
 
   platformsSetUp() {
@@ -123,33 +143,6 @@ export default class extends Phaser.State {
     this.game.steps_till_enemy = this.game.rnd.integerInRange(50, 180)
   }
 
-  setUpText() {
-    this.score_text = this.createText(20, 20, 'left', `Score: ${this.game.score}`)
-    this.lives_text = this.createText(20, 50, 'left', `Lives: ${this.game.lives}`)
-  }
-
-  createText(xOffset, yOffset, align, text) {
-    return this.game.add.text(
-      xOffset,
-      yOffset,
-      text,
-      {
-        font: '28px Times New Roman',
-        fill: '#000000',
-        boundsAlignH:align
-      }
-    ).setTextBounds(0,0, this.game.world.width,0)
-  }
-
-  enemyCollidedCat(cat, enemy) {
-    enemy.destroy()
-    this.game.lives = this.game.lives - 1
-    this.lives_text.text = `Lives: ${this.game.lives}`
-    if(this.game.lives === 0) {
-      this.gameEnd()
-    }
-  }
-
   lineSet() {
     this.line = this.game.add.sprite(0,0)
     this.game.physics.arcade.enableBody(this.line)
@@ -174,9 +167,8 @@ export default class extends Phaser.State {
     this.game.physics.enable(this.rect, Phaser.Physics.Arcade)
   }
 
-  gameEnd() {
-    this.game.state.start('Gameover')
-    this.setUpText()
+  dbmCreate() {
+    console.log(DecMeter)
   }
 
   update() {
@@ -195,6 +187,20 @@ export default class extends Phaser.State {
       this.game.score += 10
       this.game.steps_till_score = 60
       this.score_text.text = `Score: ${this.game.score}`
+    }
+  }
+
+  gameEnd() {
+    this.game.state.start('Gameover')
+    this.setUpText()
+  }
+
+  enemyCollidedCat(cat, enemy) {
+    enemy.destroy()
+    this.game.lives = this.game.lives - 1
+    this.lives_text.text = `Lives: ${this.game.lives}`
+    if(this.game.lives === 0) {
+      this.gameEnd()
     }
   }
 
