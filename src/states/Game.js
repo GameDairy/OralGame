@@ -113,13 +113,9 @@ export default class extends Phaser.State {
   }
 
   catJump() {
-    // if (this.game.cursors.left.isDown) {
-      // this.cat.body.velocity.y = -350;
-    // }
-    // if (this.game.jumpButton.isDown) {
-      // this.cat.body.velocity.y = -350;
-    // }
-    // получить текущую скорость прыжка от дб-метра и передать ее коту
+    if (this.dbmeter.getSpeed() >= 100) {
+      this.cat.body.velocity.y = -this.dbmeter.getSpeed()
+    }
   }
 
   checkCatOnThePlatform() {
@@ -173,6 +169,7 @@ export default class extends Phaser.State {
   }
 
   update() {
+    console.log(this.dbmeter.getSpeed())
     this.platformsMove(this.game.speed)
     this.game.physics.arcade.collide(this.cat, this.platforms)
     this.game.physics.arcade.collide(this.cat, this.enemies, this.enemyCollidedCat, null, this)
@@ -193,7 +190,7 @@ export default class extends Phaser.State {
 
   gameEnd() {
     this.setUpText()
-    // прибить дб-метр
+    delete this.dbmeter
     this.game.state.start('Gameover')
   }
 
