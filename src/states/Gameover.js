@@ -51,6 +51,6 @@ export default class extends Phaser.State {
 
   restartGame() {
     this.game.state.start('Game')
-    this.stage.backgroundColor = '#4286f4'
+    this.stage.backgroundColor = '#76cfe2'
   }
 }
