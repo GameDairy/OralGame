@@ -7,6 +7,7 @@ class Enemy extends Phaser.Sprite {
     this.game.physics.arcade.enableBody(this)
     this.checkWorldBounds = true
     this.body.collideWorldBounds = true
+    this.game.physics.arcade.checkCollision.left = false
     this.game.add.existing(this)
     this.body.velocity.x = speed
     this.body.velocity.y = this.game.rnd.integerInRange(300, -300)
@@ -14,9 +15,6 @@ class Enemy extends Phaser.Sprite {
   }
 
   update () {
-    if(this.x <= 0) {
-      this.destroy()
-    }
   }
 }
 export default Enemy
