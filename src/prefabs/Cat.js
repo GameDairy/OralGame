@@ -6,7 +6,7 @@ class Cat extends Phaser.Sprite {
     this.game.physics.arcade.enableBody(this)
     this.checkWorldBounds = true
     this.body.collideWorldBounds = true
-    this.body.gravity.setTo(0, 1000)
+    this.body.gravity.setTo(0, 500)
     this.game.add.existing(this)
     this.anchor.setTo(1, 1)
   }

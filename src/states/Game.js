@@ -122,6 +122,18 @@ export default class extends Phaser.State {
     this.catOnThePlatform = true
   }
 
+  checkCatOverEnemy() {
+    for(let i = this.enemies.children.length - 1; i >= 0; i--) {
+      if(this.enemies.children[i].x <= 0) {
+        if(this.cat.y < this.enemies.children[i].y) {
+          this.game.score += Math.floor((this.game.world.height - this.enemies.children[i].y) * 0.2)
+          this.score_text.text = `Score: ${this.game.score}`
+        }
+      this.enemies.children[i].destroy()
+      }
+   }
+  }
+
   enemiesSetUp() {
     this.enemies = this.game.add.group()
   }
@@ -169,28 +181,21 @@ export default class extends Phaser.State {
   }
 
   update() {
-    console.log(this.dbmeter.getSpeed())
     this.platformsMove(this.game.speed)
     this.game.physics.arcade.collide(this.cat, this.platforms)
     this.game.physics.arcade.collide(this.cat, this.enemies, this.enemyCollidedCat, null, this)
     this.game.physics.arcade.collide(this.enemies, this.platforms)
     this.game.physics.arcade.collide(this.enemies, this.line)
     this.catJump()
+    this.checkCatOverEnemy()
     this.game.steps_till_enemy--
     if(this.game.steps_till_enemy === 0) {
       this.enemyCreate()
-    }
-    this.game.steps_till_score--
-    if(this.game.steps_till_score === 0) {
-      this.game.score += 10
-      this.game.steps_till_score = 60
-      this.score_text.text = `Score: ${this.game.score}`
     }
   }
 
   gameEnd() {
     this.setUpText()
-    delete this.dbmeter
     this.game.state.start('Gameover')
   }
 
