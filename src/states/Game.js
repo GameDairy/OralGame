@@ -201,6 +201,7 @@ export default class extends Phaser.State {
 
   enemyCollidedCat(cat, enemy) {
     enemy.destroy()
+    this.cat.body.velocity.x = 0
     this.game.lives = this.game.lives - 1
     this.lives_text.text = `Lives: ${this.game.lives}`
     if(this.game.lives === 0) {

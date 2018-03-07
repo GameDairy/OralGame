@@ -12,8 +12,8 @@ export default class extends Phaser.State {
   }
 
   create () {
-    let gameover = this.game.add.audio('gameover')
-    gameover.play()
+    this.gameover = this.game.add.audio('gameover')
+    this.gameover.play()
     let pic = game.add.image(
       this.world.centerX,
       this.world.centerY - 50,
@@ -52,5 +52,6 @@ export default class extends Phaser.State {
   restartGame() {
     this.game.state.start('Game')
     this.stage.backgroundColor = '#76cfe2'
+    this.gameover.stop()
   }
 }
