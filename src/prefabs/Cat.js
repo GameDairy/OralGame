@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 
 class Cat extends Phaser.Sprite {
   constructor (game, x, y) {
-    super(game, x, y, 'cat')
+    super(game, x, y, 'catJumpUp')
     this.game.physics.arcade.enableBody(this)
     this.checkWorldBounds = true
     this.body.collideWorldBounds = true
