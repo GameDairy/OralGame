@@ -22,9 +22,6 @@ export default class extends Phaser.State {
     this.game.lives = 5
     this.game.line_height = 125
     this.game.steps_till_score = 60
-    this.game.cat_jump_up = this.game.add.sprite(101, 101, 'catJumpUp')
-    this.game.cat_jump_down = this.game.add.sprite(101, 101, 'catJumpDown')
-    //this.game.cat_died = this.game.add.sprite(122, 101, 'catDied')
     this.game.cursors = game.input.keyboard.createCursorKeys();
     this.game.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.game.roadStartPosition = {
@@ -113,18 +110,17 @@ export default class extends Phaser.State {
       this.game.cat_initial_position.x,
       this.game.cat_initial_position.y
     )
+    this.cat.animations.add('cat')
+    this.cat.frame = 0
   }
 
   catJump() {
-    if (this.dbmeter.getSpeed() >= 100) {
+    if (this.dbmeter.getSpeed() >= 80) {
       this.cat.body.velocity.y = -this.dbmeter.getSpeed()
-      //this.game.cat_jump_up.frame = 0
-      this.game.cat_jump_up.animations.add('catJumpUp')
-      this.game.cat_jump_up.animations.play('catJumpUp')
+      this.cat.animations.play('jump up', [0, 1, 2], 10, true)
     }
-    if (this.dbmeter.getSpeed() < 100) {
-      this.game.cat_jump_down.animations.add('catJumpDown')
-      this.game.cat_jump_down.animations.play('catJumpDown')
+    if (this.dbmeter.getSpeed() < 80) {
+      this.cat.animations.play('fall down',[3, 4, 5], 10, true)
     }
   }
 
