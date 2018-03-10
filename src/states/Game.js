@@ -110,21 +110,24 @@ export default class extends Phaser.State {
       this.game.cat_initial_position.x,
       this.game.cat_initial_position.y
     )
-    this.cat.animations.add('jump up', [8, 9, 10, 11], 10, true)
-    this.cat.animations.add('fall down', [5, 6, 7], 2, true)
+    this.cat.animations.add('jump', [8, 9, 10, 11], 5, true)
+    this.cat.animations.add('fall', [5, 6, 7], 5, true)
     this.cat.animations.add('run', [1, 2, 3, 4], 10, true)
     this.cat.frame = 1
   }
 
+
   catJump() {
-    if (this.dbmeter.getSpeed() >= 20) {
+    if (this.dbmeter.getSpeed() >= 10) {
       this.cat.body.velocity.y = -this.dbmeter.getSpeed()
-      this.cat.animations.play('jump up')
+      this.cat.animations.play('jump', 5, true)
     }
-    if (this.dbmeter.getSpeed() < 20 ) {
-      this.cat.animations.play('fall down')
+    if(this.dbmeter.getSpeed() < 5 && this.dbmeter.getSpeed() > 2) {
+      this.cat.animations.stop('jump')
+      this.cat.animations.play('fall')
     }
-    if (this.dbmeter.getSpeed() < 10) {
+    if (this.dbmeter.getSpeed() < 2) {
+      this.cat.animations.stop('fall')
       this.cat.animations.play('run')
     }
   }
