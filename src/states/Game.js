@@ -121,7 +121,7 @@ export default class extends Phaser.State {
       this.cat.body.velocity.y = -this.dbmeter.getSpeed()
       this.catChangeState('jump')
     } else {
-      if((this.dbmeter.getSpeed() < 100) && (this.cat.y < this.game.world.height - this.game.platform_height)) {
+      if(this.cat.y < this.game.world.height - this.game.platform_height) {
         this.catChangeState('fall')
       } else {
         this.catChangeState('run')
