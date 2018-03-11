@@ -31,7 +31,7 @@ export default class extends Phaser.State {
       this.game.world.centerX,
       this.game.world.centerY - 150,
       'center',
-      `Game over lalka. Your score: ${this.game.score}`
+      `YOU DIED. Your score: ${this.game.score}`
     )
     this.gameover_text.anchor.set(0)
   }
