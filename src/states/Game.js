@@ -33,7 +33,7 @@ export default class extends Phaser.State {
       x: 100,
       y: this.game.height - this.game.platform_height
     }
-    this.game.enemies_set = ['enemy1', 'enemy2', 'enemy3']
+    this.game.enemies_set = ['enemy1', 'enemy2', 'enemy3', 'enemy4', 'enemy5', 'enemy6', 'enemy7','enemy8', 'enemy9']
     this.game.steps_till_enemy = 0
     this.setUpText()
     this.catAdd()

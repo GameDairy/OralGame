@@ -12,7 +12,6 @@ class DecMeter extends DecibelMeter {
     }
 
     getSpeed(coef=1000) {
-
       return this.current_level * coef
     }
 }
