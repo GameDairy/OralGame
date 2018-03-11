@@ -11,11 +11,7 @@ class DecMeter extends DecibelMeter {
       return this.current_level
     }
 
-<<<<<<< HEAD
-    getSpeed(coef=2000) {
-=======
     getSpeed(coef=1000) {
->>>>>>> feature013
       return this.current_level * coef
     }
 }
